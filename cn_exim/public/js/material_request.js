@@ -1,6 +1,6 @@
 frappe.ui.form.on("Material Request", {
     validate: function (frm) {
-        if (frm.doc.material_request_type == "Purchase") {
+        if (frm.doc.material_request_type == "Purchase" && frm.doc.custom_purchase_types!="Asset") {
             let promises = [];
             frm.doc.items.forEach(item => {
                 let p = frappe.call({

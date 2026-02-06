@@ -70,7 +70,7 @@ frappe.ui.form.on("Purchase Order", {
 
 
                 frm.doc.items.forEach(element => {
-                    console.log("element-----72", element)
+                    console.log("element-----72", element,"received_qty", element.received_qty)
                     console.log("element-----73", element.qty)
                     let qty = element.qty - element.received_qty
                     console.log("qty-----74", qty)

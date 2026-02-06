@@ -43,7 +43,7 @@ def create_stock_entry_for_stock_received(doc, warehouse):
         stock_entry.append("items",{
             "item_code" : item['item'],
             "item_name" : item['item_name'],
-            "qty": item['qty'],
+            "qty": item['accepted_qty'],
             "uom": item['uom'],
             "t_warehouse": warehouse,
             "expense_account": account,
