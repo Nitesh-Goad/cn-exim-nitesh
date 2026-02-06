@@ -145,7 +145,7 @@ def validate_over_under_tolerance(doc, method=None):
         min_allowed = accepted_qty - float(over_tolerance)
 
         # Validate over/under tolerance
-        if i.qty > max_allowed:
-            frappe.throw(f"Received quantity {i.qty} for item {po_item.item_code} exceeds the over tolerance limit of {max_allowed}.")
-        if i.qty < min_allowed:
-            frappe.throw(f"Received quantity {i.qty} for item {po_item.item_code} is below the under tolerance limit of {min_allowed}.")
+        # if i.qty > max_allowed:
+        #     frappe.throw(f"Received quantity {i.qty} for item {po_item.item_code} exceeds the over tolerance limit of {max_allowed}.")
+        # if i.qty < min_allowed:
+        #     frappe.throw(f"Received quantity {i.qty} for item {po_item.item_code} is below the under tolerance limit of {min_allowed}.")

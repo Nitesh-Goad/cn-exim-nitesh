@@ -108,7 +108,7 @@ frappe.ui.form.on("Gate Entry", {
                                                     "amount": d.amount,
                                                     "base_rate": d.rate_inr,
                                                     "base_amount": d.amount_inr,
-                                                    "qty": d.qty,
+                                                    "qty": d.accepted_qty,
                                                     "purchase_order_item": response.message[0]['name']
                                                 });
                                                 resolve();

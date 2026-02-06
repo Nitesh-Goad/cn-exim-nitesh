@@ -192,7 +192,6 @@
   {
    "fieldname": "gate_entry_details",
    "fieldtype": "Table",
-   "hidden": 1,
    "label": "Gate Entry Details",
    "options": "Gate Entry Details"
   },
@@ -283,7 +282,7 @@
    "link_fieldname": "custom_gate_entry_no"
   }
  ],
- "modified": "2025-07-16 14:57:45.128141",
+ "modified": "2026-02-05 12:27:13.368883",
  "modified_by": "Administrator",
  "module": "Cn Exim",
  "name": "Gate Entry",
@@ -303,6 +302,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
