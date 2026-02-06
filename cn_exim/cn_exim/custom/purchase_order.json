@@ -2093,7 +2093,7 @@
    "name": "Purchase Order-custom_purchase_type",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Material\nService\nStock Transfer\nSubcontracting\nCapex",
+   "options": "Material\nService\nStock Transfer\nSubcontracting\nCapex\nAsset",
    "owner": "Administrator",
    "permlevel": 0,
    "placeholder": null,
