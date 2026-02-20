@@ -652,9 +652,51 @@ function total_amount_calculate(frm) {
 
 
 
+// function set_requisitioner_from_reference(frm) {
+//     // already set → do nothing
+//     if (frm.doc.custom_requisitioner) return;
+
+//     if (!frm.doc.items || !frm.doc.items.length) return;
+
+//     // 1️⃣ Try direct Material Request from PO items
+//     let mr = frm.doc.items.find(d => d.material_request)?.material_request;
+
+//     if (mr) {
+//         fetch_requisitioner(frm, mr);
+//         return;
+//     }
+
+//     // 2️⃣ Try via Supplier Quotation
+//     let sq = frm.doc.items.find(d => d.supplier_quotation)?.supplier_quotation;
+
+//     if (!sq) return;
+
+//     frappe.db.get_value("Supplier Quotation Item",
+//         { parent: sq },
+//         "material_request"
+//     ).then(r => {
+//         if (r.message?.material_request) {
+//             fetch_requisitioner(frm, r.message.material_request);
+//         }
+//     });
+// }
+
+// function fetch_requisitioner(frm, mr) {
+//     frappe.db.get_value(
+//         "Material Request",
+//         mr,
+//         "custom_requisitioner"
+//     ).then(r => {
+//         if (r.message?.custom_requisitioner) {
+//             frm.set_value("custom_requisitioner", r.message.custom_requisitioner);
+//         }
+//     });
+// }
+
+
 function set_requisitioner_from_reference(frm) {
     // already set → do nothing
-    if (frm.doc.custom_requisitioner) return;
+    if (frm.doc.custom_requisitioner && frm.doc.cost_center && frm.doc.plant) return;
 
     if (!frm.doc.items || !frm.doc.items.length) return;
 
@@ -662,7 +704,7 @@ function set_requisitioner_from_reference(frm) {
     let mr = frm.doc.items.find(d => d.material_request)?.material_request;
 
     if (mr) {
-        fetch_requisitioner(frm, mr);
+        fetch_mr_details(frm, mr);
         return;
     }
 
@@ -671,24 +713,43 @@ function set_requisitioner_from_reference(frm) {
 
     if (!sq) return;
 
-    frappe.db.get_value("Supplier Quotation Item",
+    frappe.db.get_value(
+        "Supplier Quotation Item",
         { parent: sq },
-        "material_request"
+        ["material_request"]
     ).then(r => {
         if (r.message?.material_request) {
-            fetch_requisitioner(frm, r.message.material_request);
+            fetch_mr_details(frm, r.message.material_request);
         }
     });
 }
 
-function fetch_requisitioner(frm, mr) {
+
+function fetch_mr_details(frm, mr) {
+
     frappe.db.get_value(
         "Material Request",
         mr,
-        "custom_requisitioner"
+        [
+            "custom_requisitioner",
+            "custom_cost_center",
+            "custom_plant" // change to custom_plant if needed
+        ]
     ).then(r => {
-        if (r.message?.custom_requisitioner) {
+
+        if (!r.message) return;
+
+        if (r.message.custom_requisitioner) {
             frm.set_value("custom_requisitioner", r.message.custom_requisitioner);
         }
+
+        if (r.message.custom_cost_center) {
+            frm.set_value("cost_center", r.message.custom_cost_center);
+        }
+
+        if (r.message.custom_plant) {
+            frm.set_value("plant", r.message.custom_plant); // change if custom field
+        }
+
     });
 }
