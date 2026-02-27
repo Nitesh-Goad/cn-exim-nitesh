@@ -65,6 +65,8 @@ frappe.ui.form.on("Gate Entry", {
         })
     },
     refresh: function (frm) {
+       
+
         if (frm.doc.docstatus == 1) {
             frm.add_custom_button("GRN", function () {
                 frappe.call({
