@@ -126,45 +126,68 @@ def get_multiple_purchase_order(po_name):
 
 
 
-import frappe
-import json
+# import frappe
+# import json
+
+# @frappe.whitelist()
+# def get_supplier_document_details_from_po(doc_name):
+#     print("Fetching supplier document details for PO:", doc_name)
+#     # fetch latest Supplier Invoice linked to PO
+#     supplier_invoice = frappe.db.get_all(
+#         "Supplier Invoice",
+#         filters={
+#             "po_number": doc_name
+#         },
+#         fields=[
+#             "name",
+#             "invoice_no",
+#             "invoice_date"
+#         ],
+#         order_by="creation desc",
+#         limit=1
+#     )
+#     print("Supplier Invoice fetched:======", supplier_invoice)
+#     if supplier_invoice:
+#         # invoice = supplier_invoice[0]
+
+#         return {
+#             "invoice_no": supplier_invoice[0].get("invoice_no"),
+#             "invoice_date": supplier_invoice[0].get("invoice_date")
+#         }
+
+#     return {}
+
 
 @frappe.whitelist()
 def get_supplier_document_details_from_po(doc_name):
     print("Fetching supplier document details for PO:", doc_name)
-    # doc = json.loads(doc)
-
-    # purchase_orders = []
-
-    # # extract purchase_order from items table
-    # for item in doc.get("items", []):
-    #     if item.get("purchase_order"):
-    #         purchase_orders.append(item.get("purchase_order"))
-
-    # if not purchase_orders:
-    #     return {}
-
-    # fetch latest Supplier Invoice linked to PO
+    
     supplier_invoice = frappe.db.get_all(
         "Supplier Invoice",
-        filters={
-            "po_number": doc_name
-        },
-        fields=[
-            "name",
-            "invoice_no",
-            "invoice_date"
-        ],
+        filters={"po_number": doc_name},
+        fields=["name", "invoice_no", "invoice_date"],
         order_by="creation desc",
         limit=1
     )
+    
     print("Supplier Invoice fetched:======", supplier_invoice)
+    
     if supplier_invoice:
-        # invoice = supplier_invoice[0]
-
+        invoice_name = supplier_invoice[0].get("name")
+        
+        po_items = frappe.get_all(
+            "PO Items", 
+            filters={"parent": invoice_name},
+            fields=["item", "item_description", "required_qty", "dispatch_qty", "uom"],
+            order_by="idx asc"
+        )
+        
+        print("PO Items fetched:======", po_items)
+        
         return {
             "invoice_no": supplier_invoice[0].get("invoice_no"),
-            "invoice_date": supplier_invoice[0].get("invoice_date")
+            "invoice_date": supplier_invoice[0].get("invoice_date"),
+            "po_items": po_items  
         }
-
+    
     return {}

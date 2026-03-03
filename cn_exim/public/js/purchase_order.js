@@ -171,9 +171,20 @@ frappe.ui.form.on("Purchase Order", {
                 if (res.message) {
                     bill_no = res.message.invoice_no;
                     bill_date = res.message.invoice_date;
+                    if (res.message.po_items && res.message.po_items.length > 0) {
+                supplier_qty_details = res.message.po_items.map(function(item) {
+                    return {
+                        doctype: "PO Items",
+                        
+                        item: item.item,
+                        required_qty: item.required_qty,
+                        dispatch_qty: item.dispatch_qty,
+                        uom: item.uom
+                    };
+                });
+            }
                 }
-
-                // ✅ Now create Gate Entry with bill details
+                
                 frappe.call({
                     method: "frappe.client.insert",
                     args: {
@@ -182,10 +193,9 @@ frappe.ui.form.on("Purchase Order", {
                             "supplier": frm.doc.supplier,
                             "supplier_name": frm.doc.supplier_name,
 
-                            // ✅ SET HERE
                             "bill_number": bill_no,
                             "bill_date": bill_date,
-
+                            "supplier_qty_details": supplier_qty_details,
                             "gate_entry_details": get_entry_details,
                             "purchase_order_in_gate_entry": purchase_order_details
                         }

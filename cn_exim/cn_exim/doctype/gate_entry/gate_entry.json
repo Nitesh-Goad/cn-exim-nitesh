@@ -39,6 +39,7 @@
   "received_remark",
   "section_break_mpbl",
   "purchase_order_in_gate_entry",
+  "supplier_qty_details",
   "section_break_cpls",
   "gate_entry_details",
   "section_break_yjdd",
@@ -271,6 +272,12 @@
    "fieldtype": "Time",
    "label": "Posting Time",
    "read_only_depends_on": "eval:doc.edit_posting_date_and_time == 0"
+  },
+  {
+   "fieldname": "supplier_qty_details",
+   "fieldtype": "Table",
+   "label": "Supplier Qty Details",
+   "options": "PO Items"
   }
  ],
  "grid_page_length": 50,
@@ -282,7 +289,7 @@
    "link_fieldname": "custom_gate_entry_no"
   }
  ],
- "modified": "2026-02-05 12:27:13.368883",
+ "modified": "2026-03-02 12:57:09.269130",
  "modified_by": "Administrator",
  "module": "Cn Exim",
  "name": "Gate Entry",
