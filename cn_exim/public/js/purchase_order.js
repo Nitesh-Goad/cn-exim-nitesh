@@ -829,7 +829,8 @@ function fetch_mr_details(frm, mr) {
         [
             "custom_requisitioner",
             "custom_cost_center",
-            "custom_plant" // change to custom_plant if needed
+            "custom_purchase_types",
+            "custom_plant"
         ]
     ).then(r => {
 
@@ -845,6 +846,9 @@ function fetch_mr_details(frm, mr) {
 
         if (r.message.custom_plant) {
             frm.set_value("plant", r.message.custom_plant); // change if custom field
+        }
+        if (r.message.custom_purchase_types) {
+            frm.set_value("custom_purchase_type", r.message.custom_purchase_types); // change if custom field
         }
 
     });
