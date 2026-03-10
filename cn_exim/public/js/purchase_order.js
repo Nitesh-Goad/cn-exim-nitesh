@@ -126,9 +126,7 @@ frappe.ui.form.on("Purchase Order", {
         let received_qty = 0;
 
         frm.doc.items.forEach(element => {
-
             let pending_qty = element.qty - element.received_qty;
-
             get_entry_details.push({
                 "purchase_order": frm.doc.name,
                 "item": element.item_code,
@@ -140,9 +138,8 @@ frappe.ui.form.on("Purchase Order", {
                 "rate_inr": element.amount,
                 "amount_inr": element.base_amount,
                 "po_qty": element.qty,
-                "accepted_qty":pending_qty
+                "accepted_qty": pending_qty
             });
-
         });
 
         frm.doc.items.forEach(obj => {
@@ -151,40 +148,38 @@ frappe.ui.form.on("Purchase Order", {
         });
 
         let finial_qty = qty - received_qty;
-
         purchase_order_details.push({
             "purchase_order": frm.doc.name,
             "incoming_quantity": finial_qty
         });
 
-        // ✅ First fetch invoice details
         frappe.call({
             method: "cn_exim.cn_exim.doctype.gate_entry.gate_entry.get_supplier_document_details_from_po",
             args: {
                 doc_name: frm.doc.name
             },
             callback: function (res) {
-
                 let bill_no = "";
                 let bill_date = "";
+                let supplier_qty_details = [];
 
-                if (res.message) {
-                    bill_no = res.message.invoice_no;
-                    bill_date = res.message.invoice_date;
+                if (res && res.message) {
+                    bill_no = res.message.invoice_no || "";
+                    bill_date = res.message.invoice_date || "";
+
                     if (res.message.po_items && res.message.po_items.length > 0) {
-                supplier_qty_details = res.message.po_items.map(function(item) {
-                    return {
-                        doctype: "PO Items",
-                        
-                        item: item.item,
-                        required_qty: item.required_qty,
-                        dispatch_qty: item.dispatch_qty,
-                        uom: item.uom
-                    };
-                });
-            }
+                        supplier_qty_details = res.message.po_items.map(function (item) {
+                            return {
+                                doctype: "PO Items",
+                                item: item.item,
+                                required_qty: item.required_qty,
+                                dispatch_qty: item.dispatch_qty,
+                                uom: item.uom
+                            };
+                        });
+                    }
                 }
-                
+
                 frappe.call({
                     method: "frappe.client.insert",
                     args: {
@@ -192,7 +187,6 @@ frappe.ui.form.on("Purchase Order", {
                             "doctype": "Gate Entry",
                             "supplier": frm.doc.supplier,
                             "supplier_name": frm.doc.supplier_name,
-
                             "bill_number": bill_no,
                             "bill_date": bill_date,
                             "supplier_qty_details": supplier_qty_details,
@@ -206,7 +200,6 @@ frappe.ui.form.on("Purchase Order", {
                         }
                     }
                 });
-
             }
         });
 
@@ -830,7 +823,8 @@ function fetch_mr_details(frm, mr) {
             "custom_requisitioner",
             "custom_cost_center",
             "custom_purchase_types",
-            "custom_plant"
+            "custom_plant",
+            "schedule_date"
         ]
     ).then(r => {
 
@@ -849,6 +843,9 @@ function fetch_mr_details(frm, mr) {
         }
         if (r.message.custom_purchase_types) {
             frm.set_value("custom_purchase_type", r.message.custom_purchase_types); // change if custom field
+        }
+        if (r.message.schedule_date) {
+            frm.set_value("schedule_date", r.message.schedule_date); // change if custom field
         }
 
     });
