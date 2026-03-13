@@ -18,10 +18,10 @@ frappe.ui.form.on("Material Request", {
                         frappe.validated = false;
                     }
                 });
-                if (item.custom_plant != frm.doc.custom_plant) {
-                    frappe.msgprint(`Item ${item.item_code} The selected plant does not match the expected one. Please choose the correct plant. (${frm.doc.custom_plant}).`);
-                    frappe.validated = false;
-                }
+                // if (item.custom_plant != frm.doc.custom_plant) {
+                //     frappe.msgprint(`Item ${item.item_code} The selected plant does not match the expected one. Please choose the correct plant. (${frm.doc.custom_plant}).`);
+                //     frappe.validated = false;
+                // }
                 promises.push(p);
             });
 
