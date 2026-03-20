@@ -21,5 +21,5 @@ e_waybill.get_address_map = e_waybill_override.custom_get_address_map
 PurchaseReceipt.make_item_gl_entries = purchase_receipt_override.custom_make_item_gl_entries
 
 # this call override for the change account in purchase invoice in buying
-PurchaseInvoice.set_expense_account = purchase_invoice_override.custom_set_expense_account
-PurchaseInvoice.get_gl_entries = purchase_invoice_override.custom_get_gl_entries
+# PurchaseInvoice.set_expense_account = purchase_invoice_override.custom_set_expense_account
+# PurchaseInvoice.get_gl_entries = purchase_invoice_override.custom_get_gl_entries
