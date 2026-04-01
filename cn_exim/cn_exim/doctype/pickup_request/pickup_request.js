@@ -927,8 +927,12 @@ frappe.ui.form.on("Pickup Request", {
       frm.add_custom_button(
         "Request for Quotation",
         function () {
+          //const doc = frappe.model.get_new_doc("Request for Quotation");
+          frappe.model.with_doctype("Request for Quotation", function () {
           const doc = frappe.model.get_new_doc("Request for Quotation");
+          //const doc = frappe.new_doc("Request for Quotation", {}, (docf) => {
 
+           
           // Set field values
           doc.custom_type = "Logistics";
           doc.custom_pickup_request = frm.doc.name;
@@ -985,10 +989,13 @@ frappe.ui.form.on("Pickup Request", {
             });
           }
           frappe.set_route("Form", "Request for Quotation", doc.name);
+         });
+
         },
         "Create",
       );
     }
+  
 
     frm.set_query("supplier_address", function (doc) {
       return {
