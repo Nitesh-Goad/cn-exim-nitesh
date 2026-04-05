@@ -82,8 +82,6 @@
 // })
 
 
-
-
 // Copyright (c) 2025, Prathamesh Jadhav and contributors
 // For license information, please see license.txt
 
@@ -124,6 +122,8 @@ frappe.ui.form.on("BOE Entry", {
                                     doctype: "E-way Bill",
                                     select_doctype: frm.doctype,
                                     doctype_id: frm.doc.name,
+                                    custom_boe_no: frm.doc.boe_no,
+                                    custom_boe_date: frm.doc.boe_date,
                                     pre_alert_check_list: frm.doc.per_alert_check,
                                     // total_amount: total_amount,
                                     supplier: parent_date[0]['vendor'],
@@ -142,7 +142,7 @@ frappe.ui.form.on("BOE Entry", {
                 let total_amount = frm.doc.bcd_amount + frm.doc.h_cess_amount + frm.doc.sws_amount + frm.doc.igst_amount;
                 frappe.model.with_doctype("Payment Entry", function() {
                     let doc = frappe.model.get_new_doc("Payment Entry");
-                
+               
                     doc.custom_boe_entry = frm.doc.name;
                     doc.payment_type = "Pay";
                     doc.party_type = "Supplier";
@@ -150,9 +150,9 @@ frappe.ui.form.on("BOE Entry", {
                     doc.paid_amount = total_amount;
                     doc.currency = frm.doc.currency;
                     doc.received_amount = total_amount;
-                
+               
                     frappe.set_route("Form", "Payment Entry", doc.name);
-                
+               
                     // Set party after route change to ensure party_type is applied
                     frappe.after_ajax(() => {
                         setTimeout(() => {
@@ -161,7 +161,7 @@ frappe.ui.form.on("BOE Entry", {
                         }, 300); // delay to allow party_type to process
                     });
                 });                
-                
+               
             }, __("Create"))
 
             frm.add_custom_button("PO Condition Change", function () {
