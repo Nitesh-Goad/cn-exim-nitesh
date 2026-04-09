@@ -19,6 +19,8 @@
   "supplier",
   "supplier_name",
   "currency_rate",
+  "plant",
+  "cost_center",
   "section_break_khbh",
   "vehicle_no",
   "e_waybill_no",
@@ -278,6 +280,18 @@
    "fieldtype": "Table",
    "label": "Supplier Qty Details",
    "options": "PO Items"
+  },
+  {
+   "fieldname": "plant",
+   "fieldtype": "Link",
+   "label": "Plant",
+   "options": "Plant"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
   }
  ],
  "grid_page_length": 50,
@@ -289,7 +303,7 @@
    "link_fieldname": "custom_gate_entry_no"
   }
  ],
- "modified": "2026-03-02 12:57:09.269130",
+ "modified": "2026-04-09 12:32:15.526623",
  "modified_by": "Administrator",
  "module": "Cn Exim",
  "name": "Gate Entry",

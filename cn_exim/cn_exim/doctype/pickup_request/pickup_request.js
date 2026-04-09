@@ -1379,7 +1379,6 @@
 
 
 
-
 frappe.ui.form.on("Pickup Request", {
   refresh(frm) {
     if (frm.doc.docstatus == 1) {
@@ -1496,6 +1495,8 @@ frappe.ui.form.on("Pickup Request", {
               item.item_code = row.item;
               item.item_name = row.material;
               item.qty = row.quantity;
+              item.uom = row.uom,
+              item.warehouse=row.warehouse
             });
           }
           // Copy child table transport_locations
@@ -1516,7 +1517,7 @@ frappe.ui.form.on("Pickup Request", {
         "Create",
       );
     }
-  
+ 
 
     frm.set_query("supplier_address", function (doc) {
       return {
@@ -1800,27 +1801,27 @@ frappe.ui.form.on("Pickup Request", {
 // --------------------------------------------------------------------------------------------------------
 
 
-    frappe.ui.form.on("Dimension Calculation", {
-        length: function (frm, cdt, cdn) {
-            var row = locals[cdt][cdn]
-            dimension_calculation(frm, row)
-            calculation_box_and_gross_weight(frm, cdt, cdn)
-        },
-        width: function (frm, cdt, cdn) {
-            var row = locals[cdt][cdn]
-            dimension_calculation(frm, row)
-            calculation_box_and_gross_weight(frm, row)
-        },
-        height: function (frm, cdt, cdn) {
-            var row = locals[cdt][cdn]
-            dimension_calculation(frm, row)
-            calculation_box_and_gross_weight(frm, row)
-        },
-        box: function (frm, cdt, cdn) {
-            var row = locals[cdt][cdn]
-            calculation_box_and_gross_weight(frm, row)
-        }
-    })
+    // frappe.ui.form.on("Dimension Calculation", {
+    //     length: function (frm, cdt, cdn) {
+    //         var row = locals[cdt][cdn]
+    //         dimension_calculation(frm, row)
+    //         calculation_box_and_gross_weight(frm, cdt, cdn)
+    //     },
+    //     width: function (frm, cdt, cdn) {
+    //         var row = locals[cdt][cdn]
+    //         dimension_calculation(frm, row)
+    //         calculation_box_and_gross_weight(frm, row)
+    //     },
+    //     height: function (frm, cdt, cdn) {
+    //         var row = locals[cdt][cdn]
+    //         dimension_calculation(frm, row)
+    //         calculation_box_and_gross_weight(frm, row)
+    //     },
+    //     box: function (frm, cdt, cdn) {
+    //         var row = locals[cdt][cdn]
+    //         calculation_box_and_gross_weight(frm, row)
+    //     }
+    // })
 
    
 // ------------------------------------------------------------------------------------------
@@ -1833,17 +1834,17 @@ frappe.ui.form.on("Purchase Order Details", {
   },
 });
 
-function dimension_calculation(frm, row) {
-    var weight = ((row.width ? row.width : 1) * (row.length ? row.length : 1) * (row.height ? row.height : 1)) / (frm.doc.type_wise_value ? frm.doc.type_wise_value : 1);
-    row.weight = weight
-    frm.refresh_field("dimension_calculation")
-    var total_weight = 0
-    frm.doc.dimension_calculation.forEach(item => {
-        total_weight += item.weight
-    })
-    frm.set_value("chargeable_weight", total_weight)
-    frm.set_value("gross_weight", total_weight)
-}
+// function dimension_calculation(frm, row) {
+//     var weight = ((row.width ? row.width : 1) * (row.length ? row.length : 1) * (row.height ? row.height : 1)) / (frm.doc.type_wise_value ? frm.doc.type_wise_value : 1);
+//     row.weight = weight
+//     frm.refresh_field("dimension_calculation")
+//     var total_weight = 0
+//     frm.doc.dimension_calculation.forEach(item => {
+//         total_weight += item.weight
+//     })
+//     frm.set_value("chargeable_weight", total_weight)
+//     frm.set_value("gross_weight", total_weight)
+// }
 
 function calculation_of_amount_and_inr_amount(frm) {
   var total_amount = 0;
@@ -1878,15 +1879,15 @@ function calculation_of_amount_and_inr_amount(frm) {
   frm.set_value("total_amount", total_amount);
 }
 
-    function calculation_box_and_gross_weight(frm, row) {
-        row.gross_weight = row.box * row.weight
-        frm.refresh_field("dimension_calculation")
-        let total_gross_weight = 0
-        $.each(frm.doc.dimension_calculation || [], function (i, d) {
-            total_gross_weight += d.gross_weight
-        })
-        if (!isNaN(total_gross_weight)) {
-            frm.set_value("gross_weight", total_gross_weight)
-            frm.set_value("chargeable_weight", total_gross_weight)
-        }
-    }
+    // function calculation_box_and_gross_weight(frm, row) {
+    //     row.gross_weight = row.box * row.weight
+    //     frm.refresh_field("dimension_calculation")
+    //     let total_gross_weight = 0
+    //     $.each(frm.doc.dimension_calculation || [], function (i, d) {
+    //         total_gross_weight += d.gross_weight
+    //     })
+    //     if (!isNaN(total_gross_weight)) {
+    //         frm.set_value("gross_weight", total_gross_weight)
+    //         frm.set_value("chargeable_weight", total_gross_weight)
+    //     }
+    // }

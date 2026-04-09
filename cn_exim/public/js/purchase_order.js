@@ -24,6 +24,8 @@ frappe.ui.form.on("Purchase Order", {
                         'rate': element.rate,
                         'amount': element.amount,
                         'amount_in_inr': element.base_amount,
+                        'uom':element.uom,
+                        'warehouse':element.warehouse
                     });
                 });
 
@@ -189,6 +191,8 @@ frappe.ui.form.on("Purchase Order", {
                             "supplier_name": frm.doc.supplier_name,
                             "bill_number": bill_no,
                             "bill_date": bill_date,
+                            "plant":frm.doc.plant,
+                            "cost_center":frm.doc.cost_center,
                             "supplier_qty_details": supplier_qty_details,
                             "gate_entry_details": get_entry_details,
                             "purchase_order_in_gate_entry": purchase_order_details

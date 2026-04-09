@@ -10,7 +10,11 @@ from frappe.utils import flt
 
 
 class GateEntry(Document):
-    pass
+    def on_submit(self):
+        if not self.bill_number :
+            frappe.throw("Please Enter Supplier Invoice No")
+        if not self.bill_date:
+            frappe.throw("Please Enter Supplier Invoice No Date")
 
 @frappe.whitelist()
 def get_purchase_order_details(po_name):

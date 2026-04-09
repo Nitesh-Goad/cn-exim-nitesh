@@ -201,6 +201,8 @@ frappe.ui.form.on("Gate Entry", {
                                             "supplier": frm.doc.supplier,
                                             "supplier_name": frm.doc.supplier_name,
                                             "custom_gate_entry_no": frm.doc.name,
+                                            "cost_center":frm.doc.cost_center,
+                                            "plant":frm.doc.plant,
                                             "custom_supplier_document_no": frm.doc.bill_number,
                                             "custom_supplier_document_date": frm.doc.bill_date,
                                             "items": purchase_item_list,
