@@ -1496,6 +1496,9 @@ frappe.ui.form.on("Pickup Request", {
               item.item_name = row.material;
               item.qty = row.quantity;
               item.uom = row.uom,
+               //item.conversion_factor = 1;
+              item.conversion_factor = row.conversion_factor || 1;
+
               item.warehouse=row.warehouse
             });
           }
@@ -1604,6 +1607,9 @@ frappe.ui.form.on("Pickup Request", {
                     item_row.quantity = item.qty;
                     item_row.material_desc = item.description;
                     item_row.pick_qty = item.qty;
+
+                    item_row.uom = item.uom  
+                    item_row.conversion_factor = item.conversion_factor || 1;
                     item_row.po_number = item.parent;
                     item_row.currency = r.message["currency"];
                     item_row.currency_rate = r.message["conversion_rate"];
