@@ -1506,3 +1506,5 @@ frappe.ui.form.on('Pre Alert', {
         }
     }
 });
+
+
