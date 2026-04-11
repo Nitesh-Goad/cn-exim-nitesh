@@ -1463,9 +1463,18 @@ frappe.ui.form.on("Pickup Request", {
           doc.custom_shipment_type = frm.doc.type_of_shipments;
           doc.custom_no_of_pkg_units = frm.doc.no_of_boxes;
           doc.custom_port_of_destination = frm.doc.pod;
-          doc.custom_vol_weight = frm.doc.gross_weight;
-          doc.custom_actual_weights = frm.doc.chargeable_weight;
           doc.incoterm = frm.doc.incoterms;
+
+          let total_vol = 0;
+          let total_gross = 0;
+
+          (frm.doc.dimension_calculation || []).forEach(row => {
+              total_vol += row.custom_volume_metric_weight_cm || 0;
+              total_gross += row.gross_weight || 0;
+          });
+
+          doc.custom_vol_weight = total_vol;
+          doc.custom_actual_weights = total_gross;
 
           // Copy child table dimension_calculation
           if (frm.doc.dimension_calculation && frm.doc.dimension_calculation.length > 0) {
