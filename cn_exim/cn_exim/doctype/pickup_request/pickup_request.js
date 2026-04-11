@@ -1487,21 +1487,34 @@ frappe.ui.form.on("Pickup Request", {
             });
           }
           // Copy child table purchase_order_details
-          if ( frm.doc.purchase_order_details ) {
+          if (frm.doc.purchase_order_details && frm.doc.purchase_order_details.length > 0) {
+
             doc.items = [];
 
             frm.doc.purchase_order_details.forEach((row) => {
-              let item = frappe.model.add_child(doc, "Request for Quotation Item", "items");
-              item.item_code = row.item;
-              item.item_name = row.material;
-              item.qty = row.quantity;
-              item.uom = row.uom,
-               //item.conversion_factor = 1;
-              item.conversion_factor = row.conversion_factor || 1;
 
-              item.warehouse=row.warehouse
+                frappe.db.get_doc("Item", row.item).then((item_doc) => {
+
+                    let item = frappe.model.add_child(doc, "Request for Quotation Item", "items");
+
+                    item.item_code = row.item;
+                    item.item_name = item_doc.item_name;
+                    item.qty = row.quantity;
+                    item.uom = item_doc.stock_uom;
+                    item.stock_uom = item_doc.stock_uom;
+                    item.warehouse = (item_doc.item_defaults || []).length
+                        ? item_doc.item_defaults[0].default_warehouse
+                        : null;
+                    item.conversion_factor = 1;
+                    item.schedule_date = frm.doc.pickup_date_by || frappe.datetime.get_today();
+
+                });
             });
-          }
+
+            setTimeout(() => {
+                cur_frm.refresh_field("items");
+            }, 500);
+        }
           // Copy child table transport_locations
           if ( frm.doc.transport_locations ) {
             doc.custom_local_transport_location = [];
