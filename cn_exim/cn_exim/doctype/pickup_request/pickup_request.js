@@ -1371,14 +1371,6 @@
 
 
 
-
-
-
-
-
-
-
-
 frappe.ui.form.on("Pickup Request", {
   refresh(frm) {
     if (frm.doc.docstatus == 1) {
@@ -1571,12 +1563,19 @@ frappe.ui.form.on("Pickup Request", {
         },
       };
     });
-    frm.set_query("name_of_supplier", function () {
-      return {
-        filters: {
-          supplier_group: ["!=", "CHA"],
-        },
-      };
+    // frm.set_query("name_of_supplier", function () {
+    //   return {
+    //     filters: {
+    //       supplier_group: ["!=", "CHA"],
+    //     },
+    //   };
+    // });
+    frm.set_query('name_of_supplier', function () {
+        return {
+            filters: {
+                custom_is_service_provider: 1
+            }
+        };
     });
 
     frm.add_custom_button(
